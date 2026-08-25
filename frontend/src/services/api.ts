@@ -88,7 +88,8 @@ export async function createExpense(data: ExpenseFormData): Promise<Expense> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create expense");
+    const data = await response.json().catch(() => null);
+    throw new Error(data?.errors?.[0] ?? "Failed to create expense");
   }
 
   return response.json();
